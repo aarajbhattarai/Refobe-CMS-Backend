@@ -1,0 +1,8 @@
+---
+python_version: python3
+ansistrano_deploy_to: /mnt/persist/www/naamaha
+database_name: postgres
+database_user: naamaha
+project_slug: naamaha
+domain_stage: stage.naamaha.com
+domain_prod: naamaha.com
