@@ -2,6 +2,7 @@ from django.utils.encoding import force_str
 from django import forms
 
 from django.utils.text import slugify
+from wagtail.admin.widgets import AdminTagWidget
 from wagtail.blocks import (
     StructBlock,
     CharBlock,
@@ -20,6 +21,7 @@ class ButtonBlock(StructBlock):
     link = URLBlock(
         required=False,
         label="Link",
+        null=True,
     )
     page = APIPageChooserBlock(required=False)
     button_type = ChoiceBlock(
@@ -41,6 +43,20 @@ class ButtonBlock(StructBlock):
         icon = "placeholder"
 
 
+class TagsBlock(FieldBlock):
+    """
+    Basic Stream Block that will use the Wagtail tags system.
+    Stores the tags as simple strings only.
+    """
+
+    def __init__(self, required=False, help_text=None, **kwargs):
+        self.field = forms.CharField(
+            widget=AdminTagWidget,
+            required=False,
+        )
+        super().__init__(**kwargs)
+
+
 class CardBlock(StructBlock):
     heading = TextBlock(
         required=False,
@@ -57,6 +73,7 @@ class CardBlock(StructBlock):
 
 
 class SectionBlock(StructBlock):
+    tag = TagsBlock(label="Tag")
     title = TextBlock(
         required=False,
         default="We are the best",
@@ -66,6 +83,7 @@ class SectionBlock(StructBlock):
         label="Description",
         default="Experience the best of both worlds. Enjoy comfortable accommodations paired with thrilling outdoor activities in a breathtaking natural setting.",
     )
+
 
 class HashBlock(FieldBlock):
     """Hash values which will allow sections to be automatically linked to using URL hashes

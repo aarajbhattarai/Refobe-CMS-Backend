@@ -73,6 +73,7 @@ class ContactSection(StructBlock):
         icon = "user"
         label = "Contact Section"
 
+
 class FAQBlock(StructBlock):
     question = TextBlock(
         required=True,
@@ -96,7 +97,7 @@ class FAQBlock(StructBlock):
 
 
 class FAQSection(SectionBlock):
-    faqs = ListBlock(CardBlock(), label="FAQs")
+    faqs = ListBlock(FAQBlock(), label="FAQs")
 
     class Meta:
         icon = "help"
@@ -109,6 +110,15 @@ class FAQImageSection(SectionBlock):
     class Meta:
         icon = "help"
         label = "FAQs with Image Section"
+
+
+class FeatureCarouselSection(SectionBlock):
+    images = ListBlock(APIImageChooserBlock(), label="Image Carousel")
+    button = ButtonBlock(required=False, label="Call To Action")
+
+    class Meta:
+        icon = "camera"
+        label = "Feature Image Carousel"
 
 
 class FeatureRowSection(SectionBlock):
@@ -182,9 +192,6 @@ class TeamSection(SectionBlock):
         label = "team"
 
 
-
-
-
 class TestimonialBlock(CardBlock):
     role = CharBlock(
         required=False,
@@ -218,7 +225,6 @@ class TestimonialSection(SectionBlock):
     class Meta:
         icon = "pick"
         label = "Testimonials Section"
-
 
 
 class LogoCloudBlock(SectionBlock):
