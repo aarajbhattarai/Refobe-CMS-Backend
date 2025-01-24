@@ -64,14 +64,17 @@ class BasePageSerializer(serializers.ModelSerializer):
         return {
             "html": html,
         }
-    
+
     def get_language_code(self, page):
         return self.locale.language_code
 
     def get_translations(self, page):
         translations = page.get_translations(inclusive=False)
-        return [{
-            "title": x.title,
-            "url": x.full_url,
-            "language_code": x.locale.language_code,
-        } for x in translations]
+        return [
+            {
+                "title": x.title,
+                "url": x.full_url,
+                "language_code": x.locale.language_code,
+            }
+            for x in translations
+        ]

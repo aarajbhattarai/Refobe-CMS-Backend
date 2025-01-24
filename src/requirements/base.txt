@@ -8,6 +8,9 @@ wagtail==6.3.2
 wagtail-meta-preview==4.1.0
 wagtail_headless_preview==0.8.0
 whitenoise==6.7.0
+django-storages[s3]
 wagtail_localize
 wagtail_2fa
-django-rest-swagger
+drf-spectacular
+dj-rest-auth
+django-cors-headers

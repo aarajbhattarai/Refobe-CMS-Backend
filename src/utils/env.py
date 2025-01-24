@@ -6,11 +6,14 @@ from django.core.exceptions import ImproperlyConfigured
 
 
 def get_env(name: str, default: str = "", required: bool = False) -> str:
+    value = os.environ.get(name, default)
     if name in os.environ:
         return os.environ[name]
 
     if required:
         raise ImproperlyConfigured(f"Set the {name} env variable")
+    if value is None:
+        print(f"Warning: Environment variable {key} is not set")
 
     return default
 

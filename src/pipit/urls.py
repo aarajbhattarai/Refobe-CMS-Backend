@@ -11,11 +11,16 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 
-from rest_framework_swagger.views import get_swagger_view
+# from rest_framework_swagger.views import get_swagger_view
 
 from main.views.error_500 import error_500_view
 from main.views.page_not_found import PageNotFoundView
 from nextjs.api import api_router
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 
 handler404 = PageNotFoundView.as_view()
@@ -26,15 +31,29 @@ URLList = typing.List[URL]
 
 urlpatterns: URLList = []
 
-schema_view = get_swagger_view(title='Naamaha-Refobe Travel Platform API')
+# schema_view = get_swagger_view(title='Naamaha-Refobe Travel Platform API')
 
 urlpatterns += i18n_patterns(
     re_path(r"", include(wagtail_urls)),
 )
-
 urlpatterns += [
-    re_path(r'swagger', schema_view)
+    # YOUR PATTERNS
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Optional UI:
+    path(
+        "api/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
+# urlpatterns += [
+#     re_path(r'swagger', schema_view)
+# ]
 
 if settings.DEBUG:
     urlpatterns += [
@@ -85,4 +104,3 @@ urlpatterns += [
 urlpatterns += [re_path(r"", include(wagtail_urls))]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

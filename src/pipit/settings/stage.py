@@ -1,6 +1,7 @@
 """
 Write stage settings here, or override base settings
 """
+
 import sentry_sdk
 from sentry_sdk import configure_scope
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -8,7 +9,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from pipit.settings.base import *  # NOQA
 
 
-DEBUG = False
+DEBUG = True
 
 DATABASES["default"]["CONN_MAX_AGE"] = int(
     get_env("DATABASE_CONN_MAX_AGE", default="60")
@@ -35,14 +36,14 @@ MIDDLEWARE = [
     *MIDDLEWARE[1:],
 ]
 
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    },
-}
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "django.core.files.storage.FileSystemStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#     },
+# }
 
 # Enable caching of templates in production environment
 TEMPLATES[0]["OPTIONS"]["loaders"] = [  # type: ignore[index]

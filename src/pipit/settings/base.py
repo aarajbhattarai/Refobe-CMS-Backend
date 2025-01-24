@@ -14,15 +14,13 @@ APP_VERSION = "0.1.0"
 SECRET_KEY = get_env("SECRET_KEY", required=True)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # This is when debug is off, else django wont allow you to visit the site
 ALLOWED_HOSTS = get_env("ALLOWED_HOSTS", required=True).split(",")
 
 INTERNAL_IPS = ["127.0.0.1"]
 
-
-# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -51,7 +49,9 @@ INSTALLED_APPS = [
     "wagtail_meta_preview",
     "wagtail_headless_preview",
     "rest_framework",
-    'rest_framework_swagger',
+    "storages",
+    # 'rest_framework_swagger',
+    "drf_spectacular",
     # Project specific apps
     "pipit",
     "sitesettings",
@@ -61,10 +61,14 @@ INSTALLED_APPS = [
     "main",
     "nextjs",
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://speedwings.centralindia.cloudapp.azure.com'
+# ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -104,8 +108,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "pipit.wsgi.application"
-REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
-
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Karnali Jungle Camp API",
+    "DESCRIPTION": "Your project description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+}
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # Using PostgreSQL
@@ -151,9 +164,9 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 WAGTAIL_I18N_ENABLED = True
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     # Any language you whish to support
-    ('en', "English"),
-    ('sv', "Swedish"),
-    ('de', "German"),
+    ("en", "English"),
+    ("sv", "Swedish"),
+    ("de", "German"),
 ]
 
 # Email
@@ -161,9 +174,9 @@ DEFAULT_FROM_EMAIL = get_env("DEFAULT_FROM_EMAIL", default="noreply@example.com"
 
 # Auth
 AUTH_USER_MODEL = "customuser.User"
-WAGTAIL_2FA_REQUIRED=False
+WAGTAIL_2FA_REQUIRED = False
 # Wagtail
-WAGTAIL_SITE_NAME = "Naamaha"
+WAGTAIL_SITE_NAME = "Karnali Jungle Camp"
 WAGTAILIMAGES_IMAGE_MODEL = "customimage.CustomImage"
 WAGTAILDOCS_DOCUMENT_MODEL = "customdocument.CustomDocument"
 WAGTAIL_ALLOW_UNICODE_SLUGS = False
@@ -180,15 +193,17 @@ WAGTAILIMAGES_FORMAT_CONVERSIONS = {
 }
 
 # Uploaded media
-MEDIA_URL = "/wt/media/"
-MEDIA_ROOT = get_env("MEDIA_PATH", required=True)
+# MEDIA_URL = "/wt/media/"
+# MEDIA_ROOT = get_env("MEDIA_PATH", required=True)
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 # Static URL to use when referring to static files located in STATIC_ROOT.
-STATIC_URL = "/wt/static/"
+# STATIC_URL = "/wt/static/"
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 # The absolute path to the directory where collectstatic will collect static
 # files for deployment. Example: "/var/www/example.com/static/"I
@@ -217,3 +232,24 @@ WAGTAIL_HEADLESS_PREVIEW = {
 SENTRY_DSN: Optional[str] = None
 SENTRY_ENVIRONMENT: Optional[str] = None
 
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+}
+
+# AWS Settings
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True
+AWS_S3_CUSTOM_DOMAIN = get_env("AWS_S3_CUSTOM_DOMAIN")
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"

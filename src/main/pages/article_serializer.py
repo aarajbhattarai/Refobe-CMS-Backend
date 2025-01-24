@@ -6,11 +6,16 @@ from .base_serializer import BasePageSerializer
 
 
 class ArticlePageSerializer(BasePageSerializer):
-    rich_text = serializers.SerializerMethodField()
+    # rich_text = serializers.SerializerMethodField()
 
     class Meta:
         model = ArticlePage
-        fields = BasePageSerializer.Meta.fields + ["rich_text"]
+        fields = BasePageSerializer.Meta.fields + [
+            "cover_image",
+            "category",
+            "content_section",
+            "summary",
+        ]
 
-    def get_rich_text(self, page):
-        return expand_db_html(page.rich_text)
+    # def get_rich_text(self, page):
+    #     return expand_db_html(page.rich_text)
