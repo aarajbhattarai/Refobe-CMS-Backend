@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.redirects",
     "wagtail.contrib.routable_page",
     "wagtail.contrib.settings",
+    'wagtail.locales',
     "modelcluster",
     "taggit",
     "wagtail_meta_preview",
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     "customdocument",
     "main",
     "nextjs",
+    "travelpackage",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 # CSRF_TRUSTED_ORIGINS = [
@@ -113,7 +115,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Karnali Jungle Camp API",
+    "TITLE": "Naamaha API",
     "DESCRIPTION": "Your project description",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
@@ -176,7 +178,7 @@ DEFAULT_FROM_EMAIL = get_env("DEFAULT_FROM_EMAIL", default="noreply@example.com"
 AUTH_USER_MODEL = "customuser.User"
 WAGTAIL_2FA_REQUIRED = False
 # Wagtail
-WAGTAIL_SITE_NAME = "Karnali Jungle Camp"
+WAGTAIL_SITE_NAME = "Naamaha"
 WAGTAILIMAGES_IMAGE_MODEL = "customimage.CustomImage"
 WAGTAILDOCS_DOCUMENT_MODEL = "customdocument.CustomDocument"
 WAGTAIL_ALLOW_UNICODE_SLUGS = False

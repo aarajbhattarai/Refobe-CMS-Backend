@@ -1,27 +1,29 @@
 from django.utils.encoding import force_str
 from django import forms
-
+from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from wagtail.admin.widgets import AdminTagWidget
 from wagtail.blocks import (
     StructBlock,
     CharBlock,
-    ListBlock,
+
     TextBlock,
     URLBlock,
     ChoiceBlock,
     FieldBlock,
 )
 from main.blocks.helper_blocks import APIImageChooserBlock, APIPageChooserBlock
-from django.core.exceptions import ValidationError
+
 
 
 class ButtonBlock(StructBlock):
-    text = CharBlock(required=True, max_length=100, label="Text", default="Learn More")
+    text = CharBlock(required=False, max_length=100, label="Text",)
     link = URLBlock(
         required=False,
         label="Link",
         null=True,
+        blank=True,
+        help_text="If provided, the button will be a link to this URL",
     )
     page = APIPageChooserBlock(required=False)
     button_type = ChoiceBlock(
@@ -37,6 +39,8 @@ class ButtonBlock(StructBlock):
 
         if link and page:
             raise ValidationError('Please provide either "Link" or "Page", not both.')
+        if (link or page) and not cleaned_data.get("text"):
+            raise ValidationError('Please provide a "Text" for the button.')
         return cleaned_data
 
     class Meta:
@@ -60,12 +64,12 @@ class TagsBlock(FieldBlock):
 class CardBlock(StructBlock):
     heading = TextBlock(
         required=False,
-        default="Lorem Ipsum Title",
+        default="Debugging Tech and Staffing Glitches",
     )
     description = TextBlock(
         required=False,
         label="Description",
-        default="Experience the best of both worlds. Enjoy comfortable accommodations paired with thrilling outdoor activities in a breathtaking natural setting.",
+        default="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
     )
     image = APIImageChooserBlock(required=False, label="Hero image")
 

@@ -29,7 +29,6 @@ class BasePageSerializer(serializers.ModelSerializer):
         model = BasePage
         fields: List[str] = [
             "title",
-            "last_published_at",
             "seo_title",
             "search_description",
             "seo",

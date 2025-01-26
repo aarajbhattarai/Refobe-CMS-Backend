@@ -1,6 +1,6 @@
 from wagtail.blocks import PageChooserBlock
 from wagtail.images.blocks import ImageChooserBlock
-
+from wagtail.snippets.blocks import SnippetChooserBlock
 
 class APIImageChooserBlock(ImageChooserBlock):
     def get_api_representation(self, value, context=None):
@@ -22,14 +22,12 @@ class APIPageChooserBlock(PageChooserBlock):
                 "url": value.url,
             }
 
-
-class APIPackageChooserBlock(ImageChooserBlock):
+class APITravelPackageChooserBlock(SnippetChooserBlock):
     def get_api_representation(self, value, context=None):
         if value:
             return {
                 "id": value.id,
                 "title": value.title,
-                "price": value.price,
-                "location": value.location,
+                "base_price": value.base_price,
                 "category": value.category,
             }

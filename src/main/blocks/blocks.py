@@ -1,34 +1,18 @@
-from main.blocks.common_blocks import ButtonBlock, CardBlock, VideoBlock, SectionBlock
-from main.blocks.helper_blocks import APIImageChooserBlock
 from wagtail.blocks import (
-    StructBlock,
-    ListBlock,
     CharBlock,
-    TextBlock,
-    URLBlock,
     ChoiceBlock,
+    ListBlock,
+    StructBlock,
+    TextBlock,
+    URLBlock
 )
-from wagtail.images.blocks import ImageChooserBlock
-from wagtail.api import APIField
+from main.blocks.common_blocks import ButtonBlock, CardBlock, SectionBlock
+from main.blocks.helper_blocks import APIImageChooserBlock, APITravelPackageChooserBlock
+from travelpackage.models import TravelPackage
 
 
-from wagtail.snippets.blocks import SnippetChooserBlock
-
-
-class ArticleSection(StructBlock):
-    title = TextBlock(
-        required=False,
-        label="Title",
-        default="From the blog",
-        help_text="Add a title",
-    )
-
-    description = TextBlock(
-        required=False,
-        label="Description",
-        default="Learn how to grow your business with our expert advice",
-        help_text="Add a description",
-    )
+class ArticleSection(SectionBlock):
+    packages = ListBlock(APITravelPackageChooserBlock(TravelPackage))
 
     class Meta:
         icon = "pick"
