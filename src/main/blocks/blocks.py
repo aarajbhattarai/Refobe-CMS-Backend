@@ -135,8 +135,8 @@ class HeroSection(StructBlock):
     content = CardBlock(required=True, label="Content")
 
 
-class HeroSectionCarousel(StructBlock):
-    content = ListBlock(CardBlock(), label="Carousel Images")
+class HeroCarouselSection(StructBlock):
+    content = ListBlock(CardBlock(required=True), label="Hero Carousel Images")
 
 
 class HeroSlideSection(StructBlock):
